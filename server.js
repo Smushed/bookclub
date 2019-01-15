@@ -1,8 +1,9 @@
 var express = require("express");
 const exphbs = require(`express-handlebars`);
 var app = express();
+require(`dotenv`)
 
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 8080;
 
 //Set Up for handlebars
 app.engine(`handlebars`, exphbs({ defaultLayout: `main` }));

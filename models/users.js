@@ -6,21 +6,21 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER
         },
         firstname: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             notEmpty: true
         },
         lastname: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             notEmpty: true
         },
         zip: {
-            type: DataTypes.STRING
+            type: DataTypes.TEXT
         },
         phone_number: {
             type: DataTypes.TEXT
         },
         email: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             validate: {
                 isEmail: true
             }
@@ -34,20 +34,5 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: 'active'
         }
     });
-    User.associate = function (models) {
-        // Associating Author with Posts
-        // When an Author is deleted, also delete any associated Posts
-        User.hasMany(models.Posts, {
-            onDelete: "cascade"
-        });
-    };
-    User.associate = function (models) {
-        // Associating Author with Posts
-        // When an Author is deleted, also delete any associated Posts
-        User.hasMany(models.Dog, {
-            onDelete: "cascade"
-        });
-    };
-
     return User;
 };
