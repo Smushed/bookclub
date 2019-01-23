@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="mx-auto">
+            <h1> Sign-Up </h1>
+            {{#if message}}
+                <div class="alert">{{message}}</div>
+            {{/if}}
+
+            <div class="errorMessages"></div>
+
+            <form id="signup" name="signup" method="post" action="/signup">
+                {{!-- <label for="email">Email Address</label> --}}
+                <input class="email" name="email" type="email" placeholder="E-mail" />
+                <br>
+                <br>
+                {{!-- <label for="firstname">Firstname</label> --}}
+                <input name="firstname" class="firstname" type="text" placeholder="First Name" />
+                <br>
+                <br>
+                {{!-- <label for="lastname">Lastname</label> --}}
+                <input name="lastname" class="lastname" type="text" placeholder="Last Name" />
+                <br>
+                <br>
+                {{!-- <label for="zip">Zip Code</label> --}}
+                <input name="zip" class="zip" type="text" placeholder="Zip Code" />
+                <br>
+                <br>
+                {{!-- <label for="phone_number">Phone Number</label> --}}
+                <input name="username" class="username" type="text" placeholder="Username" />
+                <br>
+                <br>
+                {{!-- <label for="password">Password</label> --}}
+                <input name="password" class="password" type="password" placeholder="New Password" />
+                <br>
+                <input class="btn btn-primary btn-lg" id="submit" type="submit" value="Sign Up" />
+            </form>
+            <hr>
+            <p>Already have an account? <a href="/login">Login</a></p>
+            <p>Or go <a href="/">home</a>.</p>
+        </div>
+    </div>
+</div>
