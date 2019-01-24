@@ -159,25 +159,30 @@ module.exports = (passport) => {
     },
         function (token, tokenSecret, profile, done) {
 
-            const twitterUser = new user({
-                email: profile.emails[0].value,
-                name: profile.displayName
+            process.nextTick(() => {
+
+                //Save if new
+                User.findOne({ 'twitter.id': profile.id }, function (err, user) {
+                    if (user) {
+                        console.log(user);
+                        done(null, user);
+                    } else {
+                        const newUser = new User()
+                        newUser.twitter.email = profile.emails[0].value;
+                        newUser.twitter.id = profile.id;
+                        newUser.twitter.token = token;
+                        newUser.twitter.username = profile.username;
+                        newUser.twitter.displayName = profile.displayName;
+
+                        newUser.save(function (err) {
+                            if (err) return done(err);
+                            done(null, newUser);
+                        });
+                    }
+                });
+
             });
 
-            //Save if new
-            User.findOne({ 'twitter.email': twitterUser.email }, function (err, u) {
-                if (!u) {
-                    twitterUser.save(function (err, twitterUser) {
-                        if (err) return done(err);
-                        done(null, twitterUser);
-                    });
-                } else {
-                    console.log(u);
-                    done(null, u);
-                }
-            });
-
-        }
-    ));
+        }));
 
 };

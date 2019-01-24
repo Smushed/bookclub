@@ -8,29 +8,19 @@ const UserSchema = new Schema({
     local: {
         firstname: {
             type: String,
-            required: [true, `First name cannot be blank`]
         },
         lastname: String,
         zip: String,
         username: {
             type: String,
-            min: [3, `Username must be 3 characters`],
             unique: true
         },
         email: {
             type: String,
             unique: true,
-            validate: {
-                validator: function (v) {
-                    const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-                    return emailRegex.test(v);
-                }, message: `Please input a valid email`
-            },
-            required: [true, `Email is required`]
         },
         password: {
-            type: String,
-            min: [5, `Password must be 5 characters`]
+            type: String
         }
     },
     facebook: {
@@ -43,7 +33,8 @@ const UserSchema = new Schema({
         id: String,
         token: String,
         displayName: String,
-        username: String
+        username: String,
+        email: String
     },
 
 });

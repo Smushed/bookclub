@@ -7,7 +7,7 @@ require(`dotenv`).config();
 const passport = require(`passport`);
 const session = require(`express-session`);
 const flash = require("connect-flash");
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 //Setting up mongoose
 const mongoose = require(`mongoose`);
@@ -38,6 +38,4 @@ require(`./routes/apiRoutes`)(app);
 require(`./routes/htmlRoutes`)(app);
 require("./routes/passportRoutes")(app, passport);
 
-app.listen(PORT, function () {
-    console.log(`App listening on PORT ${PORT}`);
-});
+app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
