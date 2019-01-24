@@ -1,7 +1,7 @@
 const express = require(`express`);
 const exphbs = require(`express-handlebars`);
 const app = express();
-require(`dotenv`);
+require(`dotenv`).config();
 
 //Setting up passport
 const passport = require(`passport`);
@@ -26,12 +26,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Setting up passport with express
-app.use(session({ secret: 'First Blood' })); // session secret
+app.use(session({ secret: 'First Blood' })); // Session Secret
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session()); // Persistent Login Sessions
 app.use(flash())
 
-//Load passport strategies
+//Load Passport Strategies
 require('./handlers/passport.js')(passport);
 
 require(`./routes/apiRoutes`)(app);

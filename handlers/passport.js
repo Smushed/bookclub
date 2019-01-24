@@ -1,27 +1,27 @@
-const LocalStrategy = require('passport-local').Strategy;
 const User = require(`../models/User`); //Only requiring user here as we are only manipulating the user within passport
 const zipcodes = require(`zipcodes`);
-
+require(`dotenv`).config();
 
 module.exports = (passport) => {
 
-    var LocalStrategy = require(`passport-local`).Strategy;
+    const LocalStrategy = require(`passport-local`).Strategy;
+    const FacebookStrategy = require(`passport-facebook`).Strategy;
+    const TwitterStrategy = require('passport-twitter').Strategy;
 
-    //Serialize
     passport.serializeUser((user, done) => {
-        done(null, user.id);
+        done(null, user._id);
     });
 
-    //DeSerialize User 
     passport.deserializeUser((id, done) => {
         User.findById(id, (err, user) => {
             done(err, user);
         });
     });
 
+    //LOCAL SIGNUP
     passport.use(`local-signup`, new LocalStrategy(
         {
-            usernameField: `username`,
+            usernameField: `email`,
             passwordField: `password`,
             passReqToCallback: true // allows us to pass back the entire request to the callback
         }, function (req, email, password, done) {
@@ -38,38 +38,40 @@ module.exports = (passport) => {
                 });
             };
 
-            //TODO Check for duplicate usernames
-            User.findOne({ 'local.email': email }, function (err, user) {
-                // if there are any errors, return the error
-                if (err) {
-                    return done(err);
-                }
+            process.nextTick(() => {
+                //TODO Check for duplicate usernames
+                //TODO Throw a better error message if the email is a duplicate
+                User.findOne({ 'local.email': req.body.email }, function (err, user) {
+                    // if there are any errors, return the error
+                    if (err) {
+                        return done(err);
+                    }
 
-                // check to see if theres already a user with that email
-                if (user) {
-                    return done(null, false, { message: 'That email is already taken' });
-                } else {
+                    // check to see if theres already a user with that email
+                    if (user) {
+                        return done(null, false, { message: 'That email is already taken' });
+                    } else {
 
-                    // if there is no user with that email
-                    // create the user
-                    var newUser = new User();
+                        // if there is no user with that email
+                        // create the user
+                        var newUser = new User();
 
-                    // set the user's local credentials
-                    newUser.local.email = req.body.email;
-                    newUser.local.password = newUser.generateHash(password);
-                    newUser.local.username = req.body.username;
-                    newUser.local.zip = req.body.zip;
-                    newUser.local.firstname = req.body.firstname;
-                    newUser.local.lastname = req.body.lastname;
+                        // set the user's local credentials
+                        newUser.local.email = req.body.email;
+                        newUser.local.password = newUser.generateHash(password);
+                        newUser.local.username = req.body.username;
+                        newUser.local.zip = req.body.zip;
+                        newUser.local.firstname = req.body.firstname;
+                        newUser.local.lastname = req.body.lastname;
 
-                    // save the user
-                    newUser.save(function (err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    });
-                }
-
+                        // save the user
+                        newUser.save(function (err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });
+                    }
+                });
             });
         }
     ));
@@ -77,15 +79,15 @@ module.exports = (passport) => {
     //LOCAL SIGNIN
     passport.use('local-signin', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField: 'username',
+        usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
-        function (req, username, password, done) { // callback with username and password from our form
+        function (req, email, password, done) { // callback with username and password from our form
 
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            User.findOne({ 'local.username': username }, function (err, user) {
+            User.findOne({ 'local.email': email }, function (err, user) {
                 // if there are any errors, return the error before anything else
                 if (err) {
                     return done(err);
@@ -101,6 +103,81 @@ module.exports = (passport) => {
                 // all is well, return successful user
                 return done(null, user);
             });
-        }));
+        })
+    );
+
+    // Facebook Signin / Signup
+    passport.use(new FacebookStrategy({
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK,
+        profileFields: ['id', 'displayName', 'emails']
+    }, function (accessToken, refreshToken, profile, done) {
+
+        process.nextTick(() => {
+
+            //Save if new
+            User.findOne({ 'facebook.email': profile.emails[0].value }, function (err, u) {
+                //If error connecting to the database stop everything
+                if (err) {
+                    return done(err);
+                }
+
+                if (user) {
+                    return done(null, user); //User is found, return that user's info
+                } else {
+                    //Create a user as there was none found
+                    const newUser = new User();
+                    //Set all of their facebook info to the new user
+                    newUser.facebook.id = profile.id;
+                    newUser.facebook.token = token;
+                    newUser.facebook.firstname = profile.name.givenName;
+                    newUser.facebook.lastname = profile.name.familyName;
+                    newUser.facebook.email = profile.email[0].value;
+
+                    //Save the new user to the database
+                    newUser.save(err => {
+                        if (err) {
+                            throw err;
+                        };
+
+                        //If successful return the new user
+                        return done(null, newUser);
+                    })
+                };
+            });
+        });
+    }
+    ));
+
+    //Twitter Signin / Signup
+    passport.use(new TwitterStrategy({
+        consumerKey: process.env.TWITTER_KEY,
+        consumerSecret: process.env.TWITTER_SECRET_KEY,
+        callbackURL: process.env.TWITTER_CALLBACK,
+        includeEmail: true
+    },
+        function (token, tokenSecret, profile, done) {
+
+            const twitterUser = new user({
+                email: profile.emails[0].value,
+                name: profile.displayName
+            });
+
+            //Save if new
+            User.findOne({ 'twitter.email': twitterUser.email }, function (err, u) {
+                if (!u) {
+                    twitterUser.save(function (err, twitterUser) {
+                        if (err) return done(err);
+                        done(null, twitterUser);
+                    });
+                } else {
+                    console.log(u);
+                    done(null, u);
+                }
+            });
+
+        }
+    ));
 
 };

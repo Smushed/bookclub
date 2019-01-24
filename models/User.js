@@ -10,12 +10,8 @@ const UserSchema = new Schema({
             type: String,
             required: [true, `First name cannot be blank`]
         },
-        lastname: {
-            type: String
-        },
-        zip: {
-            type: String
-        },
+        lastname: String,
+        zip: String,
         username: {
             type: String,
             min: [3, `Username must be 3 characters`],
@@ -39,8 +35,8 @@ const UserSchema = new Schema({
     },
     facebook: {
         id: String,
-        token: String,
-        name: String,
+        firstname: String,
+        lastname: String,
         email: String
     },
     twitter: {
