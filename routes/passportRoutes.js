@@ -20,12 +20,9 @@ module.exports = function (app, passport) {
     }
     ));
 
-    //Stopped at "Showing Our User index"
-    //https://scotch.io/tutorials/easy-node-authentication-facebook
-
     //Facebook
     app.get(`/auth/facebook`, passport.authenticate(`facebook`, {
-        scope: [`public-profile`, `email`]
+        scope: [`email`]
     }));
     app.get(`/auth/facebook/callback`, passport.authenticate(`facebook`, {
         successRedirect: `/`,

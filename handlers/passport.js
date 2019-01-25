@@ -117,7 +117,7 @@ module.exports = (passport) => {
         process.nextTick(() => {
 
             //Save if new
-            User.findOne({ 'facebook.email': profile.emails[0].value }, function (err, u) {
+            User.findOne({ 'facebook.email': profile.emails[0].value }, function (err, user) {
                 //If error connecting to the database stop everything
                 if (err) {
                     return done(err);
@@ -130,10 +130,8 @@ module.exports = (passport) => {
                     const newUser = new User();
                     //Set all of their facebook info to the new user
                     newUser.facebook.id = profile.id;
-                    newUser.facebook.token = token;
-                    newUser.facebook.firstname = profile.name.givenName;
-                    newUser.facebook.lastname = profile.name.familyName;
-                    newUser.facebook.email = profile.email[0].value;
+                    newUser.facebook.displayname = profile.displayName;
+                    newUser.facebook.email = profile.emails[0].value;
 
                     //Save the new user to the database
                     newUser.save(err => {
@@ -164,7 +162,6 @@ module.exports = (passport) => {
                 //Save if new
                 User.findOne({ 'twitter.id': profile.id }, function (err, user) {
                     if (user) {
-                        console.log(user);
                         done(null, user);
                     } else {
                         const newUser = new User()
