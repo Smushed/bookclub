@@ -87,7 +87,7 @@ module.exports = (passport) => {
 
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            User.findOne({ 'local.email': email }, function (err, user) {
+            User.findOne({ 'local.email': req.body.email }, function (err, user) {
                 // if there are any errors, return the error before anything else
                 if (err) {
                     return done(err);
@@ -120,14 +120,14 @@ module.exports = (passport) => {
             if (!req.user) {
 
                 //Save if new
-                User.findOne({ 'facebook.id': profile.id }, function (err, user) {
+                User.findOne({ 'facebook.id': profile.id }, function (err, User) {
                     //If error connecting to the database stop everything
                     if (err) {
                         return done(err);
                     }
 
-                    if (user) {
-                        return done(null, user); //User is found, return that user's info
+                    if (User) {
+                        return done(null, User); //User is found, return that user's info
                     } else {
                         //Create a user as there was none found
                         const newUser = new User();
@@ -162,7 +162,7 @@ module.exports = (passport) => {
                 User.save(function (err) {
                     if (err)
                         throw err;
-                    return done(null, user);
+                    return done(null, User);
                 });
             }
         });
@@ -176,31 +176,66 @@ module.exports = (passport) => {
         callbackURL: process.env.TWITTER_CALLBACK,
         includeEmail: true
     },
-        function (token, tokenSecret, profile, done) {
+        function (req, token, tokenSecret, profile, done) {
 
-            process.nextTick(() => {
+            // asynchronous
+            process.nextTick(function () {
 
-                //Save if new
-                User.findOne({ 'twitter.id': profile.id }, function (err, user) {
-                    if (user) {
-                        done(null, user);
-                    } else {
-                        const newUser = new User()
-                        newUser.twitter.email = profile.emails[0].value;
-                        newUser.twitter.id = profile.id;
-                        newUser.twitter.token = token;
-                        newUser.twitter.username = profile.username;
-                        newUser.twitter.displayName = profile.displayName;
+                // check if the user is already logged in
+                if (!req.user) {
 
-                        newUser.save(function (err) {
-                            if (err) return done(err);
-                            done(null, newUser);
-                        });
-                    }
-                });
+                    User.findOne({ 'twitter.id': profile.id }, function (err, User) {
+                        if (err)
+                            return done(err);
 
-            });
+                        if (User) {
+                            // if there is a user id already but no token (user was linked at one point and then removed)
+                            if (!User.twitter.token) {
+                                User.twitter.token = token;
+                                User.twitter.username = profile.username;
+                                User.twitter.displayName = profile.displayName;
 
+                                User.save(function (err) {
+                                    if (err)
+                                        throw err;
+                                    return done(null, User);
+                                });
+                            }
+
+                            return done(null, User); // user found, return that user
+                        } else {
+                            // if there is no user, create them
+                            var newUser = new User();
+
+                            newUser.twitter.id = profile.id;
+                            newUser.twitter.token = token;
+                            newUser.twitter.username = profile.username;
+                            newUser.twitter.displayName = profile.displayName;
+
+                            newUser.save(function (err) {
+                                if (err)
+                                    throw err;
+                                return done(null, newUser);
+                            });
+                        }
+                    });
+
+                } else {
+                    // user already exists and is logged in, we have to link accounts
+                    var User = req.user; // pull the user out of the session
+
+                    User.twitter.id = profile.id;
+                    User.twitter.token = token;
+                    User.twitter.username = profile.username;
+                    User.twitter.displayName = profile.displayName;
+
+                    User.save(function (err) {
+                        if (err)
+                            throw err;
+                        return done(null, user);
+                    });
+                }
+            })
         }));
 
 };

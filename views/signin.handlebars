@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="mx-auto">
-            <h1> Sign-Up </h1>
+            <h1> Sign-In </h1>
             {{#if message}}
             <div class="alert">{{message}}</div>
             {{/if}}
@@ -9,14 +9,14 @@
             <div class="errorMessages"></div>
 
             <form id="signin" name="signin" method="post" action="/signin">
-                <label for="username">User Name</label>
-                <input name="username" class="username" type="text" placeholder="User Name" />
+                <label for="email">Email</label>
+                <input name="email" class="email" type="text" placeholder="Email" />
                 <br>
                 <br>
                 <label for="password">Password</label>
                 <input name="password" class="password" type="password" placeholder="Password" />
                 <br>
-                <input class="btn btn-primary btn-lg" id="submit" type="submit" value="Sign Up" />
+                <input class="btn btn-primary btn-lg" id="submit" type="submit" value="Sign In" />
             </form>
             <h2>Sign in with:</h2>
             {{!-- Right now facebook auth isn't working --}}
