@@ -111,39 +111,60 @@ module.exports = (passport) => {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK,
+        passReqToCallback: true,
         profileFields: ['id', 'displayName', 'emails']
-    }, function (accessToken, refreshToken, profile, done) {
+    }, function (req, token, refreshToken, profile, done) {
 
         process.nextTick(() => {
 
-            //Save if new
-            User.findOne({ 'facebook.email': profile.emails[0].value }, function (err, user) {
-                //If error connecting to the database stop everything
-                if (err) {
-                    return done(err);
-                }
+            if (!req.user) {
 
-                if (user) {
-                    return done(null, user); //User is found, return that user's info
-                } else {
-                    //Create a user as there was none found
-                    const newUser = new User();
-                    //Set all of their facebook info to the new user
-                    newUser.facebook.id = profile.id;
-                    newUser.facebook.displayname = profile.displayName;
-                    newUser.facebook.email = profile.emails[0].value;
+                //Save if new
+                User.findOne({ 'facebook.id': profile.id }, function (err, user) {
+                    //If error connecting to the database stop everything
+                    if (err) {
+                        return done(err);
+                    }
 
-                    //Save the new user to the database
-                    newUser.save(err => {
-                        if (err) {
-                            throw err;
-                        };
+                    if (user) {
+                        return done(null, user); //User is found, return that user's info
+                    } else {
+                        //Create a user as there was none found
+                        const newUser = new User();
+                        //Set all of their facebook info to the new user
+                        newUser.facebook.id = profile.id;
+                        newUser.facebook.token = token;
+                        newUser.facebook.displayname = profile.displayName;
+                        newUser.facebook.email = profile.emails[0].value;
 
-                        //If successful return the new user
-                        return done(null, newUser);
-                    })
-                };
-            });
+                        //Save the new user to the database
+                        newUser.save(err => {
+                            if (err) {
+                                throw err;
+                            };
+
+                            //If successful return the new user
+                            return done(null, newUser);
+                        })
+                    };
+                });
+            } else {
+                // user already exists and is logged in, we have to link accounts
+                const User = req.user; // pull the user out of the session
+
+                // update the current users facebook credentials
+                User.facebook.id = profile.id;
+                User.facebook.token = token;
+                User.facebook.displayname = profile.displayName;
+                User.facebook.email = profile.emails[0].value;
+
+                // save the user
+                User.save(function (err) {
+                    if (err)
+                        throw err;
+                    return done(null, user);
+                });
+            }
         });
     }
     ));
