@@ -41,37 +41,67 @@ module.exports = (passport) => {
             process.nextTick(() => {
                 //TODO Check for duplicate usernames
                 //TODO Throw a better error message if the email is a duplicate
-                User.findOne({ 'local.email': req.body.email }, function (err, user) {
-                    // if there are any errors, return the error
-                    if (err) {
-                        return done(err);
-                    }
+                if (!req.user) {
 
-                    // check to see if theres already a user with that email
-                    if (user) {
-                        return done(null, false, { message: 'That email is already taken' });
-                    } else {
+                    User.findOne({ 'local.email': req.body.email }, function (err, user) {
+                        // if there are any errors, return the error
+                        if (err) {
+                            return done(err);
+                        }
 
-                        // if there is no user with that email
-                        // create the user
-                        var newUser = new User();
+                        // check to see if theres already a user with that email
+                        if (user) {
+                            return done(null, false, { message: 'That email is already taken' });
+                        } else {
 
-                        // set the user's local credentials
-                        newUser.local.email = req.body.email;
-                        newUser.local.password = newUser.generateHash(password);
-                        newUser.local.username = req.body.username;
-                        newUser.local.zip = req.body.zip;
-                        newUser.local.firstname = req.body.firstname;
-                        newUser.local.lastname = req.body.lastname;
+                            // if there is no user with that email
+                            // create the user
+                            var newUser = new User();
 
-                        // save the user
-                        newUser.save(function (err) {
-                            if (err)
-                                throw err;
-                            return done(null, newUser);
-                        });
-                    }
-                });
+                            // set the user's local credentials
+                            newUser.local.email = req.body.email;
+                            newUser.local.password = newUser.generateHash(password);
+                            newUser.local.username = req.body.username;
+                            newUser.local.zip = req.body.zip;
+                            newUser.local.firstname = req.body.firstname;
+                            newUser.local.lastname = req.body.lastname;
+
+                            // save the user
+                            newUser.save(function (err) {
+                                if (err)
+                                    throw err;
+                                return done(null, newUser);
+                            });
+                        }
+                    });
+                } else if (!req.user.local.email) {
+                    //Checks if the user's email is already in it
+                    User.findOne({ 'local.email': email }, function (err, user) {
+                        if (err)
+                            return done(err);
+
+                        if (user) {
+                            return done(null, false, { message: 'That email is already taken.' });
+                        } else {
+                            var user = req.user;
+                            user.local.email = email;
+                            user.local.username = req.body.username;
+                            user.local.zip = req.body.zip;
+                            user.local.firstname = req.body.firstname;
+                            user.local.lastname = req.body.lastname;
+                            user.local.password = user.generateHash(password);
+                            user.save(function (err) {
+                                if (err)
+                                    return done(err);
+
+                                return done(null, user);
+                            });
+                        }
+                    });
+                } else {
+                    // User is already logged in with a local account, just return their account
+                    return done(null, req.user);
+                }
             });
         }
     ));
@@ -120,14 +150,14 @@ module.exports = (passport) => {
             if (!req.user) {
 
                 //Save if new
-                User.findOne({ 'facebook.id': profile.id }, function (err, User) {
+                User.findOne({ 'facebook.id': profile.id }, function (err, user) {
                     //If error connecting to the database stop everything
                     if (err) {
                         return done(err);
                     }
 
-                    if (User) {
-                        return done(null, User); //User is found, return that user's info
+                    if (user) {
+                        return done(null, user); //User is found, return that user's info
                     } else {
                         //Create a user as there was none found
                         const newUser = new User();
@@ -177,32 +207,32 @@ module.exports = (passport) => {
         includeEmail: true
     },
         function (req, token, tokenSecret, profile, done) {
-
+            console.log(req.user)
             // asynchronous
             process.nextTick(function () {
 
                 // check if the user is already logged in
                 if (!req.user) {
 
-                    User.findOne({ 'twitter.id': profile.id }, function (err, User) {
+                    User.findOne({ 'twitter.id': profile.id }, function (err, user) {
                         if (err)
                             return done(err);
 
-                        if (User) {
+                        if (user) {
                             // if there is a user id already but no token (user was linked at one point and then removed)
-                            if (!User.twitter.token) {
-                                User.twitter.token = token;
-                                User.twitter.username = profile.username;
-                                User.twitter.displayName = profile.displayName;
+                            if (!user.twitter.token) {
+                                user.twitter.token = token;
+                                user.twitter.username = profile.username;
+                                user.twitter.displayName = profile.displayName;
 
-                                User.save(function (err) {
+                                user.save(function (err) {
                                     if (err)
                                         throw err;
-                                    return done(null, User);
+                                    return done(null, user);
                                 });
                             }
 
-                            return done(null, User); // user found, return that user
+                            return done(null, user); // user found, return that user
                         } else {
                             // if there is no user, create them
                             var newUser = new User();
@@ -222,14 +252,14 @@ module.exports = (passport) => {
 
                 } else {
                     // user already exists and is logged in, we have to link accounts
-                    var User = req.user; // pull the user out of the session
+                    var user = req.user; // pull the user out of the session
 
-                    User.twitter.id = profile.id;
-                    User.twitter.token = token;
-                    User.twitter.username = profile.username;
-                    User.twitter.displayName = profile.displayName;
+                    user.twitter.id = profile.id;
+                    user.twitter.token = token;
+                    user.twitter.username = profile.username;
+                    user.twitter.displayName = profile.displayName;
 
-                    User.save(function (err) {
+                    user.save(function (err) {
                         if (err)
                             throw err;
                         return done(null, user);
@@ -237,5 +267,4 @@ module.exports = (passport) => {
                 }
             })
         }));
-
 };
