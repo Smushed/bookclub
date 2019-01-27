@@ -21,9 +21,13 @@ module.exports = app => {
 
     app.get(`/userlist`, async (req, res) => {
         const userlist = await userHandler.getUserList();
+        res.render(`allusers`, { userlist });
+    });
+
+    app.get(`/userlistjson`, async (req, res) => {
+        const userlist = await userHandler.getUserList();
         res.json(userlist);
-        // res.render(`allusers`, { userList });
-    })
+    });
 
 };
 
