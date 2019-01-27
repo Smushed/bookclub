@@ -29,7 +29,7 @@ module.exports = (passport) => {
             //Email isn't case sensitive in passport
 
             let zip = ``;
-            req.body.zip.trim().replace(/\s+/g, '').split("").forEach(item => { if (!isNaN(item)) { zip += item } });
+            req.body.zip.trim().replace(/\s+/g, '').split(``).forEach(item => { if (!isNaN(item)) { zip += item } });
 
             //Checks if the zip code inputted is a valid US zip
             if (typeof zipcodes.lookup(zip) === `undefined`) {
@@ -49,7 +49,7 @@ module.exports = (passport) => {
 
                     // check to see if theres already a user with that email
                     if (user) {
-                        return done(null, false, { message: 'That email is already taken' });
+                        return done(null, false, { message: `That email is already taken` });
                     } else {
 
                         // if there is no user with that email
@@ -77,10 +77,10 @@ module.exports = (passport) => {
     ));
 
     //LOCAL SIGNIN
-    passport.use('local-signin', new LocalStrategy({
+    passport.use(`local-signin`, new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField: 'email',
-        passwordField: 'password',
+        usernameField: `email`,
+        passwordField: `password`,
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
         function (req, email, password, done) { // callback with username and password from our form
@@ -98,7 +98,7 @@ module.exports = (passport) => {
                 };
                 // if the user is found but the password is wrong
                 if (!user.validPassword(password)) {
-                    return done(null, false, { message: `Oops! Wrong password.` }); // create the loginMessage and save it to session as flashdata
+                    return done(null, false, { message: `Invalid password.` }); // create the loginMessage and save it to session as flashdata
                 };
                 // all is well, return successful user
                 return done(null, user);
@@ -111,7 +111,7 @@ module.exports = (passport) => {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK,
-        profileFields: ['id', 'displayName', 'emails']
+        profileFields: [`id`, `displayName`, `emails`]
     }, function (accessToken, refreshToken, profile, done) {
 
         process.nextTick(() => {
