@@ -167,6 +167,10 @@ module.exports = (passport) => {
                         newUser.facebook.displayname = profile.displayName;
                         newUser.facebook.email = profile.emails[0].value;
 
+                        //Add first time registerer from Facebook to local as well
+                        newUser.local.username = profile.displayName;
+                        newUser.local.email = profile.emails[0].value;
+
                         //Save the new user to the database
                         newUser.save(err => {
                             if (err) {
