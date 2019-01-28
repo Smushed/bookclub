@@ -1,0 +1,6 @@
+{{#each userlist}}
+{{!-- TODO if this is the current user don't allow them to add as a friend --}}
+<strong>Name: </strong> {{this.local.username}} <button class="{{this._id}} btn btn-sm btn-primary">Add as friend</button>
+<br />
+<br />
+{{/each}}
