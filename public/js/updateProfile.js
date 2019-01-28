@@ -1,38 +1,74 @@
-$(`.updateFirstname`).on(`click`, async () => {
-    const updatedName = await Swal.fire({
-        title: `Enter Updated First Name`,
-        input: `text`,
-        showCancelButton: true,
-        inputValidator: (value) => {
-            return !value && `Please Enter a Value`
-        }
-    });
+const profileUpdate = async (request) => {
+    let shownText = ``;
+    switch (request) {
+        case `username`:
+            shownText = `Enter Updated Username`;
+            break;
+        case `firstname`:
+            shownText = `Enter Updated First Name`;
+            break;
+        case `lastname`:
+            shownText = `Enter Updated Last Name`;
+            break;
+        case `zip`:
+            shownText = `Enter Updated Zip Code`;
+            break;
+        case `email`:
+            shownText = `Enter Updated Email`;
+            break;
+    }
+
+    let updatedField = {}; //Declaring it outside of the if statement as we want to use it later
+    if (request !== `email`) {
+        updatedField = await Swal.fire({
+            title: shownText,
+            input: `text`,
+            showCancelButton: true,
+            inputValidator: (value) => {
+                return !value && `Please Enter a Value`
+            }
+        });
+    } else { //If the user wants to input an email address they get a different modal
+        updatedField = await Swal.fire({
+            title: 'Input email address',
+            input: 'email',
+            inputPlaceholder: 'Enter your email address'
+        });
+    };
 
     const updatedUser = {
         userID: $(`.userID`).val(),
-        firstname: updatedName.value,
-        request: `firstname`
+        value: updatedField.value.trim(),
+        request
     };
 
     //If the user enters a first name then the ajax request is fired off
     //TODO Add a success function or something to either reload the page or update it in React
-    if (updatedUser.firstname) {
+    if (updatedUser.value) {
         $.ajax({
             url: `/api/updateuser`,
             method: `PUT`,
             data: updatedUser
         });
     };
+}
+
+$(`.updateUsername`).on(`click`, () => {
+    profileUpdate(`username`);
+})
+
+$(`.updateFirstname`).on(`click`, () => {
+    profileUpdate(`firstname`);
 });
 
 $(`.updateLastname`).on(`click`, () => {
-    console.log($(`.userID`).val())
+    profileUpdate(`lastname`);
 });
 
 $(`.updateZip`).on(`click`, () => {
-    console.log($(`.userID`).val())
+    profileUpdate(`zip`);
 });
 
 $(`.updateEmail`).on(`click`, () => {
-    console.log($(`.userID`).val())
+    profileUpdate(`email`);
 });
