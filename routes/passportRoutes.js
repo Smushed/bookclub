@@ -74,7 +74,8 @@ module.exports = function (app, passport) {
         failureRedirect: `/`
     }));
 
-    // UNLINK ACCOUNTS
+    // TODO UNLINK ACCOUNTS
+    // https://scotch.io/tutorials/easy-node-authentication-linking-all-accounts-together
     // local -----------------------------------
     app.get(`/unlink/local`, function (req, res) {
         const User = req.user;

@@ -100,6 +100,7 @@ module.exports = (passport) => {
                     });
                 } else {
                     // User is already logged in with a local account, just return their account
+                    //TODO If user is trying to signup with their email after signin with Facebook tell them to signin with Facebook first
                     return done(null, req.user);
                 }
             });
