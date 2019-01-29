@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 const Schema = mongoose.Schema;
 
+//Everything is to be singular
 const UserSchema = new Schema({
 
     local: {
@@ -36,7 +37,13 @@ const UserSchema = new Schema({
         username: String,
         email: String
     },
-
+    favoriteGenre: [String], //Makes this an array of strings to store the user's favorite genres
+    notification: [
+        {
+            category: {}, //Should be Group: groupID || Message: userID || Request {friend: userID} OR {joingroup: groupID}
+            seen: Boolean
+        }
+    ] //Stores notifications to the user profile
 });
 
 //Methods for validation

@@ -1,4 +1,4 @@
-var db = require("../models");
+var db = require("../models"); //TODO Possibly delete this later on, shouldn't be accessing database on routes page
 const userHandler = require(`../handlers/userHandler`);
 
 module.exports = app => {
@@ -10,4 +10,28 @@ module.exports = app => {
         //Pass the user to change's field, their updated value and what field they would like to change
         const result = await userHandler.updateProfile(req.body.userID, req.body.value, req.body.request);
     });
+
+    //TODO Delete below, these are only for testing
+    app.post(`/api/testdb`, async (req, res) => {
+        switch (req.body.request) {
+            case `post`:
+                const newPost = new Post();
+                newPost.user = req.body.userID;
+                newPost.group = req.body.group;
+                newPost.date = new Date(req.body.date);
+                newPost.text = req.body.text;
+                newPost.isSpoiler = req.body.isSpoiler;
+                newPost.comment = req.body.comment
+                newPost.save(err => {
+                    if (err) {
+                        throw err;
+                    }
+                    res.json(newPost);
+                })
+                break;
+            case `group`:
+                //TODO write group DB test here
+                break;
+        }
+    })
 };

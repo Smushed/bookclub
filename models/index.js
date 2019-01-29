@@ -1,3 +1,5 @@
 module.exports = {
-    User: require(`./User`)
+    User: require(`./User`),
+    Group: require(`./Group`),
+    Post: require(`./Post`)
 };
