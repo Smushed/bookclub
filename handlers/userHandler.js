@@ -27,6 +27,8 @@ module.exports = {
         switch (request) {
             case `username`:
                 //TODO Add something to display if the username was already taken
+                //Verify that the username isn't taken manually, in addition to having the protection in the database
+                //The manual verification should not be case sensitive
                 //Mongoose won't let them save a duplicate username but currently won't tell them
                 updatedField = `local.username`;
                 break;
