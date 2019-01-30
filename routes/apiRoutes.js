@@ -30,6 +30,9 @@ module.exports = app => {
                 newGroup.groupInfo = req.body.groupInfo;
                 newGroup.userlist = req.body.userlist;
                 newGroup.currentBook = req.body.currentBook;
+                newGroup.pastBook = req.body.pastBook;
+                db.Group.create(newGroup);
+                res.json(newGroup)
                 break;
         }
     })

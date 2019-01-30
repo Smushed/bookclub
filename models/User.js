@@ -43,7 +43,8 @@ const UserSchema = new Schema({
             category: {}, //Should be Group: groupID || Message: userID || Request {friend: userID} OR {joingroup: groupID}
             seen: Boolean
         }
-    ] //Stores notifications to the user profile
+    ], //Stores notifications to the user profile
+    blockedUser: [String] // Array of user ids
 });
 
 //Methods for validation
