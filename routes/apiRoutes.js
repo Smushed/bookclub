@@ -15,22 +15,21 @@ module.exports = app => {
     app.post(`/api/testdb`, async (req, res) => {
         switch (req.body.request) {
             case `post`:
-                const newPost = new Post();
+                const newPost = {};
                 newPost.user = req.body.userID;
                 newPost.group = req.body.group;
                 newPost.date = new Date(req.body.date);
                 newPost.text = req.body.text;
                 newPost.isSpoiler = req.body.isSpoiler;
                 newPost.comment = req.body.comment
-                newPost.save(err => {
-                    if (err) {
-                        throw err;
-                    }
-                    res.json(newPost);
-                })
+                db.Post.create(newPost)
                 break;
             case `group`:
                 //TODO write group DB test here
+                const newGroup = {};
+                newGroup.groupInfo = req.body.groupInfo;
+                newGroup.userlist = req.body.userlist;
+                newGroup.currentBook = req.body.currentBook;
                 break;
         }
     })

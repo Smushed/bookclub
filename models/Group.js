@@ -24,7 +24,15 @@ const GroupSchema = new Schema({
             dateFinished: Date
         }
     ],
-    pastBooks: {}
+    pastBooks: [
+        {
+            title: String,
+            author: String,
+            pages: Number,
+            description: String,
+            dateFinished: Date
+        }
+    ]
 });
 
 
