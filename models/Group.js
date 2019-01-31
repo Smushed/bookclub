@@ -15,6 +15,7 @@ const GroupSchema = new Schema({
         {
             _id: String,
             isAdmin: Boolean,
+            isCreator: Boolean,
             isBanned: Boolean
         }
     ],
