@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 //Everything is to be singular
 const GroupSchema = new Schema({
     groupInfo: {
-        name: {
+        name: { // Too cute, make them fields in themselves
             type: String,
             unique: true
         },
@@ -15,7 +15,7 @@ const GroupSchema = new Schema({
         {
             _id: String,
             isAdmin: Boolean,
-            isCreator: Boolean,
+            isMod: Boolean,
             isBanned: Boolean
         }
     ],

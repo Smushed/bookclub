@@ -29,7 +29,6 @@ module.exports = function (app, passport) {
         failureRedirect: `/signin`
     }));
 
-
     //Twitter
     app.get(`/auth/twitter`, passport.authenticate(`twitter`, {
         scope: [`include_email=true`]
@@ -38,18 +37,6 @@ module.exports = function (app, passport) {
     app.get(`/auth/twitter/callback`, passport.authenticate(`twitter`, {
         successRedirect: `/`,
         failureRedirect: `/login`
-    }));
-
-    //AUTHORIZE USERS
-    //When users are already logged in and connecting to another social account
-    app.get(`/connect/local`, function (req, res) {
-        res.render(`connect-local`);
-    });
-
-    app.post(`/connect/local`, passport.authenticate(`local-signup`, {
-        successRedirect: `/`,
-        failureRedirect: `/connect/local`,
-        failureFlash: true
     }));
 
     //Facebook

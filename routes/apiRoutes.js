@@ -1,5 +1,6 @@
-var db = require("../models"); //TODO Possibly delete this later on, shouldn't be accessing database on routes page
+const db = require("../models"); //TODO Possibly delete this later on, shouldn't be accessing database on routes page
 const userHandler = require(`../handlers/userHandler`);
+const groupHandler = require(`../handlers/groupHandler`);
 
 module.exports = app => {
     app.post(`/api/searchbook`, async (req, res) => {
@@ -35,5 +36,14 @@ module.exports = app => {
                 res.json(newGroup)
                 break;
         }
-    })
+    });
+
+    //User adds a new group, fills out a form on the book name & description
+    //Then adds the current book they're reading
+    //THEN hits this route to complete the group
+    app.post(`/api/creategroup`, userHandler.isLoggedIn, async (req, res) => {
+        const response = await groupHandler.createGroup(req.user._id, req.body.groupName, req.body.groupDescription);
+        res.json(response);
+
+    });
 };
