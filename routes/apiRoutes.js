@@ -42,6 +42,8 @@ module.exports = app => {
     //Then adds the current book they're reading
     //THEN hits this route to complete the group
     app.post(`/api/creategroup`, userHandler.isLoggedIn, async (req, res) => {
+        //If 500 is returned a group with that name already exists
+        //Else it returns the new group
         const response = await groupHandler.createGroup(req.user._id, req.body.groupName, req.body.groupDescription);
         res.json(response);
 
