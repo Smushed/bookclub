@@ -3,11 +3,11 @@
         <div class="mx-auto">
             <h1> Sign-Up </h1>
             {{#if message}}
-            <div class="alert">{{message}}</div>
+                <div class="alert">{{message}}</div>
             {{/if}}
 
             <div class="errorMessages"></div>
-
+            {{!-- TODO Need to add username & email checking for duplicate username / email --}}
             <form id="signup" name="signup" method="post" action="/signup">
                 {{!-- <label for="email">Email Address</label> --}}
                 <input class="email" name="email" type="email" placeholder="E-mail" />

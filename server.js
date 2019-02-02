@@ -35,6 +35,7 @@ app.use(flash())
 require('./handlers/passport.js')(passport);
 
 require(`./routes/apiRoutes`)(app);
+require(`./routes/groupRoutes`)(app);
 require(`./routes/htmlRoutes`)(app);
 require("./routes/passportRoutes")(app, passport);
 
