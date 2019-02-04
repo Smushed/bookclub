@@ -12,31 +12,24 @@ const GroupSchema = new Schema({
     userlist: [
         {
             _id: String,
-            isAdmin: Boolean,
-            isMod: Boolean,
+            isAdmin: {
+                type: Boolean,
+                default: false
+            },
+            isMod: {
+                type: Boolean,
+                default: false
+            },
             isBanned: {
                 type: Boolean,
                 default: false
             }
         }
     ],
-    currentBook: {
-        title: String,
-        author: String,
-        pages: Number,
-        description: String
-    },
+    currentBook: String, //This is going to be the id of the book which they searched
     // Everything is singular
     //Array of books that this group has read in the past
-    pastBook: [
-        {
-            title: String,
-            author: String,
-            pages: Number,
-            description: String,
-            dateFinished: Date
-        }
-    ]
+    pastBook: [String]
 });
 
 
