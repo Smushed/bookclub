@@ -1,42 +1,38 @@
 const express = require(`express`);
-const exphbs = require(`express-handlebars`);
+const path = require(`path`);
+const PORT = process.env.PORT || 3001;
 const app = express();
 require(`dotenv`).config();
 
-//Setting up passport
-const passport = require(`passport`);
-const session = require(`express-session`);
-const flash = require("connect-flash");
-const cookieParser = require('cookie-parser');
+const cookieParser = require(`cookie-parser`);
+const bodyParser = require(`body-parser`);
+const Cors = require(`cors`);
 
 //Setting up mongoose
 const mongoose = require(`mongoose`);
 const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost/bookClub`;
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-const PORT = process.env.PORT || 3000;
-
-//Set Up for handlebars
-app.engine(`handlebars`, exphbs({ defaultLayout: `main` }));
-app.set(`view engine`, `handlebars`);
-
-app.use(express.static(`public`));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(Cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
-//Setting up passport with express
-app.use(session({ secret: 'First Blood' })); // Session Secret
-app.use(passport.initialize());
-app.use(passport.session()); // Persistent Login Sessions
-app.use(flash())
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === `production`) {
+  app.use(express.static(`client/build`));
+};
 
-//Load Passport Strategies
-require('./handlers/passport.js')(passport);
-
-require(`./routes/apiRoutes`)(app);
 require(`./routes/groupRoutes`)(app);
-require(`./routes/htmlRoutes`)(app);
-require("./routes/passportRoutes")(app, passport);
+require(`./routes/bookRoutes`)(app);
+require(`./routes/userRoutes`)(app);
 
-app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
+// Send every other request to the React app
+// Define any API routes before this runs
+app.get(`*`, (req, res) => {
+  res.sendFile(path.join(__dirname, `./client/build/index.html`));
+});
+
+app.listen(PORT, () => {
+  console.log(`🌎 ==> API server now on port ${PORT}!`);
+});

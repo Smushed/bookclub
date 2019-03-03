@@ -1,5 +1,4 @@
 const mongoose = require(`mongoose`);
-var bcrypt = require('bcrypt-nodejs');
 
 const Schema = mongoose.Schema;
 
@@ -11,7 +10,6 @@ const UserSchema = new Schema({
             type: String,
         },
         lastname: String,
-        zip: String,
         username: {
             type: String,
             unique: true
@@ -19,9 +17,6 @@ const UserSchema = new Schema({
         email: {
             type: String,
             unique: true,
-        },
-        password: {
-            type: String
         }
     },
     facebook: {
@@ -38,6 +33,8 @@ const UserSchema = new Schema({
         email: String
     },
     favoriteGenre: [String], //Makes this an array of strings to store the user's favorite genres
+    readingPace: String,
+    grouplist: [String],
     notification: [
         {
             category: {}, //Should be Group: groupID || Message: userID || Request {friend: userID} OR {joingroup: groupID}
@@ -47,13 +44,5 @@ const UserSchema = new Schema({
     blockedUser: [String] // Array of user ids
 });
 
-//Methods for validation
-UserSchema.methods.generateHash = function (password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-UserSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
-};
 
 module.exports = mongoose.model(`User`, UserSchema);

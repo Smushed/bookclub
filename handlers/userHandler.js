@@ -1,17 +1,4 @@
 const db = require(`../models`);
-const zipcodes = require(`zipcodes`);
-
-const validateZip = (zipToCheck) => {
-    let zip = ``;
-    zipToCheck.trim().replace(/\s+/g, '').split(``).forEach(item => { if (!isNaN(item)) { zip += item } });
-
-    //Checks if the zip code inputted is a valid US zip
-    if (typeof zipcodes.lookup(zip) === `undefined`) {
-        return false;
-    } else {
-        return true;
-    }
-};
 
 //This is for updating the user profile once created
 //The user only has access to the local profile
@@ -38,14 +25,6 @@ module.exports = {
             case `lastname`:
                 updatedField = `local.lastname`;
                 break;
-            case `zip`:
-                //Checks if the zip is valid, if so it processes the update, otherwise it skips it
-                if (validateZip(updatedValue)) {
-                    updatedField = `local.zip`;
-                } else {
-                    return `Invalid Zip` //TODO Add something here to display that the zip is invalid
-                }
-                break;
             case `email`:
                 //TODO Add something to display if the username was already taken
                 //Sweet Alert 2 handles email validation
@@ -68,5 +47,45 @@ module.exports = {
         }
         // if they aren't redirect them to the home page
         res.redirect(`/`);
+    },
+    getProfile: async (userID) => {
+        const userProfile = await db.User.findById([userID]);
+        return userProfile;
+    },
+    saveNewUser: async (newUser) => {
+        const newUserInDB = await db.User.create(newUser);
+        return newUserInDB;
+    },
+    getUserByEmail: async (email) => {
+        const foundUser = await db.User.findOne({ 'local.email': email });
+        return foundUser;
+    },
+    userSearch: async (query, searchParam) => {
+        //On the front end we control what can be searched with a select dropdown
+        let userArray = [];
+        switch (searchParam) {
+            case `username`:
+                userArray = await db.User.find({ 'local.username': query });
+                break;
+            case `email`:
+                userArray = await db.User.find({ 'local.email': query });
+                break;
+        }
+
+        const userArrayToShow = userArray.map(user => {
+            const dataToShow = {
+                userID: user._id,
+                email: user.local.email,
+                username: user.local.username,
+                firstname: user.local.firstname,
+                lastname: user.local.lastname,
+            }
+            return dataToShow
+        })
+        return userArrayToShow;
+    },
+    getUserByID: async (userID) => {
+        const foundUser = await db.User.findById([userID]);
+        return foundUser;
     }
-}
+};
