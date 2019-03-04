@@ -5,27 +5,18 @@ import * as Routes from '../constants/routes';
 import SignOutButton from './SignOutButton';
 import { HomeLink } from './Home';
 import { CreateGroupLink } from './CreateGroup';
-import Logo from '../images/logo.png';
 
 import { Nav, Navbar, NavItem, NavLink } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 
-
-const background = {
-    backgroundColor: '#343a40',
-    width: 'auto',
-    height: '100%',
-    overflow: 'hidden',
-
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-};
-
 const textsize = {
-    fontSize: "30px",
+    fontSize: '25px',
     color: 'white',
 };
+
+const navStyle = {
+    borderRadius: '0'
+}
 
 const padding = {
     marginLeft: '40px'
@@ -37,59 +28,49 @@ const padding2 = {
 
 const NavBar = (props) => {
     return (
-        <div>
-            <header style={background}
-                className="navbar">
-                <div style={textsize}>
-                    <Row>
-                        <Col>
-                            <Navbar color="dark" dark expand="md">
-                                {props.authUser ? (<section>
-                                    <Nav navbar>
-                                        <NavItem >
-                                            <HomeLink />
-                                        </NavItem>
-                                        <NavItem >
-                                            <CreateGroupLink />
-                                        </NavItem>
-                                        <NavItem>
-                                            <SignOutButton />
-                                        </NavItem>
+        <Navbar color="dark" dark expand="md" style={navStyle}>
+            <div style={textsize}>
+                <Row>
+                    <Col sm={{ size: '3', offset: 1 }}>
+                        Logo Goes Here
+                    </Col>
+                    <Col xs={{ size: '4', offset: '1' }}>
+                        {props.authUser ? (<section>
+                            <Nav navbar>
+                                <NavItem >
+                                    <HomeLink />
+                                </NavItem>
+                                <NavItem >
+                                    <CreateGroupLink />
+                                </NavItem>
+                                <NavItem>
+                                    <SignOutButton />
+                                </NavItem>
+                            </Nav>
+                        </section>
+                        ) : (
+                                <section>
+                                    <Nav style={textsize}  >
+                                        <div style={padding2}>
+                                            <NavItem>
+                                                <NavLink href={Routes.signin}>Sign In </NavLink>
+                                            </NavItem>
+                                        </div>
+                                        <div style={padding}>
+                                            <NavItem>
+                                                <NavLink href={Routes.signup}>Sign Up</NavLink>
+                                            </NavItem>
+                                        </div>
                                     </Nav>
                                 </section>
-                                ) : (
-                                        <section>
-                                            <Nav style={textsize}  >
-                                                <div style={padding2}>
-                                                    <NavItem>
-                                                        <NavLink href={Routes.signin}>Sign In </NavLink>
-                                                    </NavItem>
-                                                </div>
-                                                <div style={padding}>
-                                                    <NavItem>
-                                                        <NavLink href={Routes.signup}>Sign Up</NavLink>
-                                                    </NavItem>
-                                                </div>
-                                            </Nav>
-                                        </section>
-                                    )
-                                }
-                            </Navbar>
-                        </Col>
-                    </Row>
-                </div>
-                <div >
-                    <Row>
-                        <Col sm={{ size: '4', offset: 1 }}>
-                            <img src={Logo} alt="Logo" height="150px" width="auto" />
-                        </Col>
-                    </Row>
-                </div>
-            </header>
-        </div >
-
-    )
-}
+                            )
+                        }
+                    </Col>
+                </Row>
+            </div>
+        </Navbar>
+    );
+};
 
 
 export default NavBar;
