@@ -2,18 +2,29 @@ import React, { Component, Fragment } from 'react';
 import { withAuthorization } from './Session';
 import PasswordChangeForm from './PasswordChange';
 import axios from 'axios';
+import { Button, Label, Input, } from "reactstrap";
 
 const inputStyle = {
     width: '25%',
-    height: '40px'
-}
+    height: '40px',
+    fontSize: '16px'
+};
+
 const labelStyle = {
     marginBottom: '0px'
-}
+};
 
 const shiftLeft = {
     marginLeft: '30px'
-}
+};
+
+const updateProfileStyle = {
+    fontSize: '20px'
+};
+
+const profileDisplayStyle = {
+    fontSize: '16px'
+};
 
 const initialUpdateState = {
     username: '',
@@ -83,12 +94,14 @@ class UserProfile extends Component {
         const { isCurrentUser, dbUsername, dbEmail, dbFirstname, dbLastname } = this.state;
 
         return (
-            <div style ={shiftLeft}> 
-                <h1>{this.state.dbUsername}'s Profile</h1>
-                <div>Username: {dbUsername}</div>
-                <div>Email: {dbEmail}</div>
-                <div>Firstname: {dbFirstname}</div>
-                <div>Lastname: {dbLastname}</div>
+            <div style={shiftLeft}>
+                <h1>{dbUsername}'s Profile</h1>
+                <div style={profileDisplayStyle}>Username: {dbUsername}</div>
+                <div style={profileDisplayStyle}>Email: {dbEmail}</div>
+                <div style={profileDisplayStyle}>Firstname: {dbFirstname}</div>
+                <div style={profileDisplayStyle}>Lastname: {dbLastname}</div>
+
+                {/* If the user is the current user logged in they can update their profile here */}
                 {isCurrentUser &&
                     <Fragment>
                         <UpdateInformationForm userID={this.props.userID} updatedProfile={this.updatedProfile} />
@@ -155,17 +168,15 @@ class UpdateInformationForm extends Component {
     };
 
     checkValidInput = (fieldSubmitted) => {
-        let invalidInputs = 0;
-
         if (fieldSubmitted === 'email' && !this.state.emailValid) {
             this.setState({ validMessage: `Email entered is invalid` });
-            return false
+            return false;
         };
 
         if (fieldSubmitted === 'username' && !this.state.usernameValid) {
-            this.setState({ validMessage: `Please ensure username is at least 3 characters, no more than 16 and only contains letters, numbers, underscores and dashes` });
-            return false
-        }
+            this.setState({ validMessage: `Please ensure username is between 3 & 16 characters & it only contains letters, numbers, underscores & dashes` });
+            return false;
+        };
 
         return true;
     };
@@ -179,63 +190,82 @@ class UpdateInformationForm extends Component {
         const lastnameIsInvalid = lastname === '';
 
         return (
-            <div className='form-group'>
+            <div style={updateProfileStyle}>
                 {validMessage && <p>{validMessage}</p>}
                 <br />
-                <label style={labelStyle}>Username:</label>
-                <input className='form-input'
+                <Label style={labelStyle}>
+                    Username:
+                </Label>
+                <Input
                     style={inputStyle}
                     type='text'
                     name='username'
                     placeholder='Update Username'
                     value={username}
-                    onChange={this.handleChange}></input>
-                <button className='btn btn-primary'
+                    onChange={this.handleChange} />
+                <Button
+                    color='primary'
                     disabled={usernameIsInvalid}
-                    onClick={() => this.handleSubmit('username')}>Update Username</button>
+                    onClick={() => this.handleSubmit('username')}>
+                    Update Username
+                </Button>
 
                 <br />
 
-                <label style={labelStyle}>Email:</label>
-                <input className='form-input'
+                <Label style={labelStyle}>
+                    Email:
+                </Label>
+                <Input
                     style={inputStyle}
                     type='text'
                     name='email'
                     placeholder='Update Email'
                     value={email}
-                    onChange={this.handleChange}></input>
-                <button className='btn btn-primary'
+                    onChange={this.handleChange} />
+                <Button
+                    color='primary'
                     disabled={emailIsInvalid}
-                    onClick={() => this.handleSubmit('email')}>Update Email</button>
+                    onClick={() => this.handleSubmit('email')}>
+                    Update Email
+                </Button>
 
                 <br />
 
-                <label style={labelStyle}>First Name:</label>
-                <input className='form-input'
+                <Label style={labelStyle}>
+                    First Name:
+                </Label>
+                <Input
                     style={inputStyle}
                     type='text'
                     name='firstname'
                     placeholder='Update Firstname'
                     value={firstname}
-                    onChange={this.handleChange}></input>
-                <button className='btn btn-primary'
+                    onChange={this.handleChange}></Input>
+                <Button
+                    color='primary'
                     disabled={firstnameIsInvalid}
-                    onClick={() => this.handleSubmit('firstname')}>Update Firstname</button>
+                    onClick={() => this.handleSubmit('firstname')}>
+                    Update Firstname
+                </Button>
 
                 <br />
 
-                <label style={labelStyle}>Last Name:</label>
-                <input className='form-input'
+                <Label style={labelStyle}>
+                    Last Name:
+                </Label>
+                <Input
                     style={inputStyle}
                     type='text'
                     name='lastname'
                     placeholder='Update Lastname'
                     value={lastname}
-                    onChange={this.handleChange}></input>
-                <button className='btn btn-primary'
+                    onChange={this.handleChange} />
+                <Button
+                    color='primary'
                     disabled={lastnameIsInvalid}
-                    onClick={() => this.handleSubmit('lastname')}>Update Lastname</button>
-                <br />
+                    onClick={() => this.handleSubmit('lastname')}>
+                    Update Lastname
+                </Button>
             </div >
         );
     };

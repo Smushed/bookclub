@@ -10,13 +10,9 @@ import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 //Using Swal to display message when group is created
 const Alert = withReactContent(Swal);
 
-const inputStyle = {
-    width: '50%',
-    height: '40px'
-}
 const labelStyle = {
     marginBottom: '0px'
-}
+};
 
 const initialState = {
     groupName: '',
@@ -77,8 +73,6 @@ class CreateGroup extends Component {
                 {/* If there's an error with sign in then display the error */}
                 {error && <p>{error.message}</p>}
 
-
-
                 <Form style={formlabelStyle} onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Label style={labelStyle} htmlFor="groupName" for="text"> Group Name: </Label>
@@ -104,16 +98,14 @@ class CreateGroup extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
-
-
                     <Button
                         color="secondary"
                         size="lg"
                         disabled={isInvalid}
                         type="submit"
-                    >
-                        Create New Group
-              </Button>
+                    >Create New Group
+                    </Button>
+
                 </Form>
             </div>
 

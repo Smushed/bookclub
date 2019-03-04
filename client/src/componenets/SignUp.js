@@ -3,29 +3,32 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from './Firebase';
 import { compose } from 'recompose';
 import axios from 'axios';
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 import * as Routes from '../constants/routes';
 import { SignInLink } from './SignIn';
+import WelcomeMessage from './WelcomeMessage';
 
 
 const inputStyle = {
     width: '50%',
-    height: '40px'
-}
+    height: '40px',
+    fontSize: '16px'
+};
+
 const labelStyle = {
     marginBottom: '0px'
-}
+};
+
 const form = {
     display: 'block',
     marginLeft: '50px',
     marginRight: 'auto',
-}
+};
 
-const about = {
-fontSize: '17px',
-textAlign: 'center',
-}
+const fontStyle = {
+    fontSize: '25px'
+};
 
 const initialState = {
     username: '',
@@ -44,30 +47,19 @@ const initialState = {
 
 const SignUpPage = () => (
     < div style={form} >
-    <Row>
-    <Col xs="6">
-        <h3>SignUp</h3>
-        <SignUpForm />
-        <SignInLink />
+        <Row>
+            <Col xs='1' />
+            <Col xs='5'>
+                <h3>SignUp</h3>
+                <SignUpForm />
+                <SignInLink />
 
-        </Col>
-        <Col xs="6">
-        <p style ={about}>
-        <strong>Welcome to Bookworm!</strong>
-       <br></br>
-       We’re helping you create a community around the books you love and the ones you want to read. By joining us we help keep you engaged with reading. Join now, create a club, invite your friends, pick your favorite book and get reading!
-       <br></br> <br></br>
-       Bookworm helps you facilitate your bookclub ensuring everyone is on the same page and place where your club can talk about the book. Our clubs feature benchmark tracking and dialog between users through a familiar post and comment feature.
-       <br></br> <br></br>
-       We’re totally free, why not sign up and get reading?
-       </p>
-        </Col>
+            </Col>
+            <Col xs='5'>
+                <WelcomeMessage />
+            </Col>
+            <Col xs='1' />
         </Row>
-
-
-
-
-
     </div>
 );
 
@@ -142,7 +134,7 @@ class SignUpFormBase extends Component {
 
         switch (fieldName) {
             case `email`:
-                let checkEmail = value.match(/^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                let checkEmail = value.match(/^(([^<>()\]\\.,;:\s@']+(\.[^<>()\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
                 validCheck = checkEmail ? true : false;
                 this.setState({ emailValid: validCheck });
                 break;
@@ -176,120 +168,115 @@ class SignUpFormBase extends Component {
             passwordOne < 6;
 
         return (
-            <div className="SignupForm">
+            <div className='SignupForm'>
                 <br />
                 {/* If there's an error with signup then display the error */}
                 {error && <p>{error.message}</p>}
+
+                {/* This is for checking if any of the inputs were invalid */}
                 {validMessage && validMessage.map((message, i) => <p key={i}>{message}</p>)}
 
-                <form className="form-horizontal" onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="email" style={labelStyle}>Email </label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                type="text"
-                                id="email"
-                                name="email"
-                                placeholder="ex. janedoe@email.com"
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Email
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            type='text'
+                            id='email'
+                            name='email'
+                            placeholder='ex. janedoe@email.com'
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="password" style={labelStyle}>Password<br />(Must be at least 6 characters with no spaces) </label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                placeholder="Password"
-                                type="password"
-                                name="password"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Password
+                                <br />
+                            (Must be at least 6 characters with no spaces)
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='Password'
+                            type='password'
+                            name='password'
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="confirmPassword" style={labelStyle}>Confirm Password </label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                placeholder="Confirm Password"
-                                type="password"
-                                name="confirmPassword"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Confirm Password
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='Confirm Password'
+                            type='password'
+                            name='confirmPassword'
+                            value={this.state.confirmPassword}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="username" style={labelStyle}>Username<br />(Must be at least 3 characters, no more than 16, no special characters & no spaces)</label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                placeholder="ex. JaneDoe14"
-                                type="username"
-                                name="username"
-                                value={this.state.username}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Username
+                            <br />
+                            (Must be between 3 & 16 characters, no special characters & no spaces)
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='ex. JaneDoe14'
+                            type='username'
+                            name='username'
+                            value={this.state.username}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="firstname" style={labelStyle}>First Name: </label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                placeholder="ex. Jane"
-                                type="firstname"
-                                name="firstname"
-                                value={this.state.firstname}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            First Name:
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='ex. Jane'
+                            type='firstname'
+                            name='firstname'
+                            value={this.state.firstname}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group">
-                        <div >
-                            <label className="form-label" htmlFor="lastname" style={labelStyle}>Last Name: </label>
-                        </div>
-                        <div >
-                            <input className="form-input"
-                                style={inputStyle}
-                                placeholder="ex. Doe"
-                                type="lastname"
-                                name="lastname"
-                                value={this.state.lastname}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Last Name:
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='ex. Doe'
+                            type='lastname'
+                            name='lastname'
+                            value={this.state.lastname}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
 
-                    <div className="form-group ">
-                        <div ></div>
-                        <button
+                    <FormGroup>
+                        <Button
+                            color='primary'
+                            size='lg'
                             disabled={isInvalid}
-                            className="btn btn-primary col-1 col-mr-auto"
-                            type="submit"
-                        >Sign Up</button>
-                    </div>
-                </form>
-            </div>
+                            type='submit'>
+                            Sign Up
+                        </Button>
+                    </FormGroup>
+                </Form>
+            </div >
         )
     };
 }
@@ -299,7 +286,12 @@ const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
 const SignUpLink = () => (
     <p>
-        Don't have an account? <Link to={Routes.signup}><button className="btn btn-success">Sign Up</button></Link>
+        Don't have an account?
+        <Link to={Routes.signup}>
+            <Button color='success' size='lg'>
+                Sign Up
+            </Button>
+        </Link>
     </p>
 );
 

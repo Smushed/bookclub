@@ -3,7 +3,7 @@ import { withAuthorization } from '../Session';
 import axios from 'axios';
 import { Button } from 'reactstrap';
 import AddPost from './AddPost';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import Worm from './images/wormlong2.png'
 
 const divider = {
@@ -155,7 +155,7 @@ class SinglePost extends Component {
                     </div>
                 </div>
             </span>
-        )
+        );
     };
 };
 
@@ -164,7 +164,7 @@ class ShowComment extends Component {
         super(props)
         this.state = {
             username: ''
-        }
+        };
     };
 
     componentDidMount = () => {
@@ -201,8 +201,8 @@ class ShowComment extends Component {
                 </div>
                 <hr></hr>
             </Fragment>
-        )
-    }
+        );
+    };
 };
 
 class AddComment extends Component {
@@ -210,7 +210,7 @@ class AddComment extends Component {
         super(props)
         this.state = {
             comment: ''
-        }
+        };
     };
 
     handleSubmit = async () => {
@@ -222,8 +222,8 @@ class AddComment extends Component {
         if (dbResponse.status === 200) {
             this.props.getAllPosts();
             this.setState({ comment: '' })
-        }
-    }
+        };
+    };
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -254,9 +254,9 @@ class AddComment extends Component {
                     </Col>
                 </Row>
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
 const condition = authUser => !!authUser;
 

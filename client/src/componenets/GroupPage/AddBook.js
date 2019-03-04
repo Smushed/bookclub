@@ -4,8 +4,7 @@ import axios from "axios";
 import { BarLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Button, Form, FormGroup, Label, Input, Card, CardImg, CardText, CardBody, CardTitle, } from "reactstrap";
-import { Col } from "reactstrap";
+import { Col, Button, Form, FormGroup, Label, Input, Card, CardImg, CardText, CardBody, CardTitle, } from "reactstrap";
 
 //Using Swal to display messages when add book button is hit
 const Alert = withReactContent(Swal);
@@ -38,18 +37,19 @@ const cardTitleStyle = {
 const cardBodyStyle = {
   fontSize: '15px',
   margin: '0 auto'
-}
+};
 
 const loaderStyle = `
     display: block;
     margin: 0 auto;
 `;
+
 const formlabelStyle = {
-  fontSize: "25px"
+  fontSize: '25px'
 };
 
 const forminputsize = {
-  fontSize: "20px"
+  fontSize: '20px'
 };
 
 class AddBookPage extends Component {
@@ -131,8 +131,7 @@ class AddBookPage extends Component {
                   color="secondary"
                   size="lg"
                   disabled={isInvalid}
-                  type="submit"
-                >
+                  type="submit">
                   Search Book
               </Button>
               </Form>{" "}
@@ -184,27 +183,14 @@ class SingleBook extends Component {
     const chosenBook = { ...this.props.book };
     const { groupID, isAdmin } = this.props;
 
-    const dbResponse = await axios.post(`/api/addbook`, {
-      groupID,
-      isAdmin,
-      chosenBook
-    });
+    const dbResponse = await axios.post(`/api/addbook`, { groupID, isAdmin, chosenBook });
     if (dbResponse.status === 200) {
-      this.addTotalBenchmark(
-        totalBenchmark,
-        groupID,
-        isAdmin,
-        chosenBook.title
-      );
+      this.addTotalBenchmark(totalBenchmark, groupID, isAdmin, chosenBook.title);
     }
   };
 
   addTotalBenchmark = async (totalCount, groupID, isAdmin, title) => {
-    const dbResponse = await axios.put(`/api/updatepagesetup`, {
-      totalCount,
-      groupID,
-      isAdmin
-    });
+    const dbResponse = await axios.put(`/api/updatepagesetup`, { totalCount, groupID, isAdmin });
 
     if (dbResponse.status === 200) {
       //Send alert to user that they should add the first chapter for the group

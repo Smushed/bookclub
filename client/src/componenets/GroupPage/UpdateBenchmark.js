@@ -5,7 +5,7 @@ import { Button, Form, FormGroup, Label, Input, } from 'reactstrap';
 
 const labelStyle = {
     marginBottom: '0px'
-}
+};
 
 const initialState = {
     nextBenchmark: '',
@@ -15,24 +15,24 @@ const initialState = {
 
 const formlabelStyle = {
     fontSize: '25px'
-}
+};
 
 const forminputsize = {
     fontSize: '20px'
-}
+};
 
 
 class UpdateBenchmark extends Component {
     constructor(props) {
         super(props)
         this.state = { ...initialState };
-    }
+    };
 
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
-        })
-    }
+        });
+    };
 
     handleCurrentSubmit = async event => {
         event.preventDefault();
@@ -48,8 +48,8 @@ class UpdateBenchmark extends Component {
             }
         } catch (error) {
             this.setState({ error: { message: `Moderator needed to update benchmark` } })
-        }
-    }
+        };
+    };
 
     handleTotalSubmit = async event => {
         event.preventDefault();
@@ -65,8 +65,8 @@ class UpdateBenchmark extends Component {
             }
         } catch (error) {
             this.setState({ error: { message: `Moderator needed to update benchmark` } });
-        }
-    }
+        };
+    };
 
     render() {
         const { nextBenchmark, totalBenchmark, error } = this.state;

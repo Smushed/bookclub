@@ -10,10 +10,11 @@ import * as Routes from '../constants/routes';
 const inputStyle = {
     width: '50%',
     height: '40px'
-}
+};
+
 const labelStyle = {
     marginBottom: '0px'
-}
+};
 
 const initalState = {
     password: '',

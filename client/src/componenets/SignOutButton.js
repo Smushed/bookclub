@@ -1,15 +1,15 @@
 import React from 'react';
-
+import { Button } from 'reactstrap';
 import { withFirebase } from './Firebase';
 
 const textsize = {
-  fontSize:"25px"
+  fontSize: "25px"
 }
 
 const SignOutButton = ({ firebase }) => (
-  <button style={textsize} className="btn btn-link" onClick={firebase.doSignOut}>
+  <Button style={textsize} color='link' onClick={firebase.doSignOut}>
     Sign Out
-  </button>
+  </Button>
 );
 
 export default withFirebase(SignOutButton);

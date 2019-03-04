@@ -232,8 +232,8 @@ class GroupPage extends Component {
         </Row>
       </div>
     );
-  }
-}
+  };
+};
 
 const GroupInfo = props => {
   return (

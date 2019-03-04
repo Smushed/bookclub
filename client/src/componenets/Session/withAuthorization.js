@@ -12,10 +12,9 @@ const withAuthorization = condition => Component => {
                 authUser => {
                     if (!condition(authUser)) {
                         this.props.history.push(Routes.signin);
-                    }
-                }
-            );
-        }
+                    };
+                });
+        };
 
         componentWillUnmount() {
             this.listener();

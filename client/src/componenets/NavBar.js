@@ -39,14 +39,13 @@ const NavBar = (props) => {
     return (
         <div>
             <header style={background}
-                className="navbar"
-            >
+                className="navbar">
                 <div style={textsize}>
                     <Row>
                         <Col>
                             <Navbar color="dark" dark expand="md">
                                 {props.authUser ? (<section>
-                                    <Nav className="ml-auto" navbar>
+                                    <Nav navbar>
                                         <NavItem >
                                             <HomeLink />
                                         </NavItem>

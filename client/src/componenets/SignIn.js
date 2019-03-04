@@ -6,56 +6,49 @@ import { SignUpLink } from './SignUp';
 import { PasswordResetLink } from './PasswordReset'
 import { withFirebase } from './Firebase';
 import * as Routes from '../constants/routes';
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import WelcomeMessage from './WelcomeMessage';
 
 const inputStyle = {
     width: '75%',
-    height: '40px'
-}
-const labelStyle = {
-    marginBottom: '0px'
-}
+    height: '40px',
+    fontSize: '16px'
+};
 
-const form = {
+const labelStyle = {
+    marginBottom: '0px',
+};
+
+const formStyle = {
     display: 'block',
     marginLeft: '30px',
     marginRight: 'auto',
-}
-
-const about = {
-fontSize: '17px',
-textAlign: 'center',
-}
-
-const SignInPage = () => (
-    < div style={form} >
-    <Row>
-    <Col xs="6">
-        <h3>SignIn</h3>
-        <SignInForm />
-        <SignUpLink />
-        </Col>
-   
-        <Col xs="6">
-        <p style ={about}>
-        <strong>Welcome to Bookworm!</strong>
-       <br></br>
-       We’re helping you create a community around the books you love and the ones you want to read. By joining us we help keep you engaged with reading. Join now, create a club, invite your friends, pick your favorite book and get reading!
-       <br></br> <br></br>
-       Bookworm helps you facilitate your bookclub ensuring everyone is on the same page and place where your club can talk about the book. Our clubs feature benchmark tracking and dialog between users through a familiar post and comment feature.
-       <br></br> <br></br>
-       We’re totally free, why not sign in and get reading?
-       </p>
-        </Col>
-        </Row>
-    </div>
-);
+    fontSize: '20px'
+};
 
 const initialState = {
     email: '',
     password: '',
     error: null
 };
+
+const SignInPage = () => (
+    < div style={formStyle} >
+        <Row>
+            <Col xs='1' />
+            <Col xs='5'>
+                <h3>SignIn</h3>
+                <SignInForm />
+                <SignUpLink />
+            </Col>
+            <Col xs='5'>
+                <WelcomeMessage />
+            </Col>
+            <Col xs='1' />
+        </Row>
+    </div>
+);
+
 
 class SignInFormBase extends Component {
     constructor(props) {
@@ -91,59 +84,52 @@ class SignInFormBase extends Component {
         const isInvalid = password === '' || email === '';
 
         return (
-            <div > 
+            <div >
                 <br />
                 {/* If there's an error with sign in then display the error */}
                 {error && <p>{error.message}</p>}
-               
-                <form className='form-horizontal' onSubmit={this.handleSubmit}>
-                    <div className='form-group'>
-                        <div >
-                            <label className='form-label' style={labelStyle} htmlFor='email'>Email:</label>
-                        </div>
-                        <div >
-                            <input className='form-input'
-                                style={inputStyle}
-                                type='text'
-                                name='email'
-                                placeholder='email'
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                    <div className='form-group'>
-                        <div >
-                            <label className='form-label' style={labelStyle} htmlFor='password'>Password: </label>
-                        </div>
-                        <div >
-                            <input className='form-input'
-                                style={inputStyle}
-                                placeholder='password'
-                                type='password'
-                                name='password'
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                    <div className='form-group '>
-                        <div ></div>
-                        <button
-                            className='btn btn-primary '
+
+                <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                        <Label style={labelStyle} >
+                            Email:
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            type='text'
+                            name='email'
+                            placeholder='email'
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label style={labelStyle}>
+                            Password:
+                        </Label>
+                        <Input
+                            style={inputStyle}
+                            placeholder='password'
+                            type='password'
+                            name='password'
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Button
+                            color='primary'
+                            size='lg'
                             disabled={isInvalid}
-                            type='submit'>Login</button>
-                    </div>
-                </form>
+                            type='submit'>
+                            Login
+                        </Button>
+                    </FormGroup>
+                </Form>
                 <PasswordResetLink />
-               
-
-
-
-             
-            </div>
+            </div >
         );
-   
+
     };
 };
 
@@ -151,23 +137,15 @@ const SignInForm = compose(withRouter, withFirebase)(SignInFormBase);
 
 const SignInLink = () => (
     <p>
-        Already have an account? <Link to={Routes.signin}><button className='btn btn-success'>Sign In</button></Link>
+        Already have an account?
+        <Link to={Routes.signin}>
+            <Button color='success'
+                size='lg'>
+                Sign In
+            </Button>
+        </Link>
     </p>
-  
- 
-
- 
-   
 );
-
-
-
-
-
-
-
-
-
 
 export default SignInPage;
 
