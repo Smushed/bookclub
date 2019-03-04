@@ -77,10 +77,6 @@ class UserSearch extends Component {
 
                 {userArray && userArray.map((user, i) => <SingleUser user={user} key={i} isAdmin={this.props.isAdmin} groupID={this.props.groupID} updatePage={this.props.updatePage} />)}
             </div>
-
-
-
-
         )
     }
 }
