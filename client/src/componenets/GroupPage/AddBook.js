@@ -122,7 +122,6 @@ class AddBookPage extends Component {
                     style={forminputsize}
                     type="text"
                     name="bookSearch"
-
                     placeholder="Enter a Book to Search"
                     value={this.state.bookSearch}
                     onChange={this.handleChange}
@@ -131,7 +130,6 @@ class AddBookPage extends Component {
                 <Button
                   color="secondary"
                   size="lg"
-
                   disabled={isInvalid}
                   type="submit"
                 >

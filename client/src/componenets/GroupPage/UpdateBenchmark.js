@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import axios from 'axios';
 import { Button, Form, FormGroup, Label, Input, } from 'reactstrap';
-import { Row, Col } from "reactstrap";
 
-const inputStyle = {
-    width: '50%',
-    height: '40px'
-}
 const labelStyle = {
     marginBottom: '0px'
 }

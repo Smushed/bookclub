@@ -15,8 +15,8 @@ const GroupList = (props) => {
                     </Link>)}
             </div>
         </div>
-    )
-}
+    );
+};
 
 class SingleGroup extends Component {
     constructor(props) {
@@ -24,8 +24,8 @@ class SingleGroup extends Component {
         this.state = {
             groupName: '',
             error: null
-        }
-    }
+        };
+    };
 
     componentDidMount = async () => {
         const dbResponse = await axios.get(`/api/getgroupdata/${this.props.groupID}`);
@@ -33,8 +33,8 @@ class SingleGroup extends Component {
             this.setState({ groupName: dbResponse.data.name })
         } else {
             this.setState({ error: dbResponse.data })
-        }
-    }
+        };
+    };
 
     render() {
         return (

@@ -19,19 +19,6 @@ const progressBarStyle = {
     marginRight: 'auto'
 };
 
-const fillerStyle = {
-    background: '#1DA598',
-    height: '100%',
-    borderRadius: 'inherit',
-    transition: 'width .2s ease-in'
-};
-
-
-
-
-
-
-
 class CurrentBook extends Component {
     constructor(props) {
         super(props);
@@ -42,15 +29,15 @@ class CurrentBook extends Component {
         const bookID = this.props.currentBook;
         if (bookID) {
             this.getCurrentBook(bookID);
-        }
-    }
+        };
+    };
 
     componentDidUpdate(prevProps) {
         if (this.props.currentBook !== prevProps.currentBook) {
             const bookID = this.props.currentBook;
             this.getCurrentBook(bookID)
-        }
-    }
+        };
+    };
 
     getCurrentBook = async (bookID) => {
         const dbResponse = await axios.get(`/api/getbookdata/${bookID}`);
@@ -65,16 +52,12 @@ class CurrentBook extends Component {
                 error: dbResponse.data.error
             });
         };
-    }
+    };
 
     render() {
         const percentageComplete = (this.props.currentBenchmark / this.props.totalBenchmark) * 100;
         const { currentBenchmark, totalBenchmark } = this.props;
         const { title, image } = this.state;
-
-
-
-        
 
         return (
             <div className='currentBook'>
@@ -82,7 +65,7 @@ class CurrentBook extends Component {
                     <br></br>
                     {title}
                     <br></br>
-                    <img width="auto" height="75%" src={image} alt={`${title}`} />
+                    <img width='auto' height='75%' src={image} alt={`${title}`} />
                 </div>
 
                 <br></br>
@@ -92,14 +75,13 @@ class CurrentBook extends Component {
                     {currentBenchmark} / {totalBenchmark} </div>
                 <br />
             </div>
-
         );
     };
 };
 
 const ProgressBar = (props) => {
     return (
-        <div className='progressBar'
+        <div
             style={progressBarStyle}>
             <BarFiller percentage={props.percentage} />
         </div>
@@ -108,7 +90,7 @@ const ProgressBar = (props) => {
 
 const BarFiller = (props) => {
     return (
-        <div className='filler'
+        <div
             style={{
                 background: '#1DA598',
                 height: '100%',

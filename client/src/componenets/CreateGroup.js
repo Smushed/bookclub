@@ -5,8 +5,7 @@ import * as Routes from '../constants/routes';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { Button, Form, FormGroup, Label, Input, Card, CardImg, CardText, CardBody, CardTitle, } from "reactstrap";
-import { Row, Col } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
 //Using Swal to display message when group is created
 const Alert = withReactContent(Swal);
@@ -26,28 +25,28 @@ const initialState = {
 };
 
 const textsize = {
-    fontSize:"25px"
+    fontSize: "25px"
 }
 const formlabelStyle = {
     fontSize: "25px"
-  };
-  
-  const forminputsize = {
+};
+
+const forminputsize = {
     fontSize: "20px"
-  };
+};
 
 
 class CreateGroup extends Component {
     constructor(props) {
         super(props)
         this.state = { ...initialState };
-    }
+    };
 
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
-        })
-    }
+        });
+    };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -81,47 +80,44 @@ class CreateGroup extends Component {
 
 
                 <Form style={formlabelStyle} onSubmit={this.handleSubmit}>
-                <FormGroup>
-                <Label style={labelStyle} htmlFor="groupName" for="text"> Group Name: </Label>
+                    <FormGroup>
+                        <Label style={labelStyle} htmlFor="groupName" for="text"> Group Name: </Label>
+                        <Input
+                            style={forminputsize}
+                            type="text"
+                            name="groupName"
 
-                <Input
-                  style={forminputsize}
-                  type="text"
-                  name="groupName"
-                
-                  placeholder='Enter A Group Name'
-                  value={this.state.groupName}
-                  onChange={this.handleChange}
-                />
-                   </FormGroup>
-                
-                <FormGroup>
-                <Label style={labelStyle} htmlFor="groupDescription" for="text">Enter A Group Description: </Label>
-                 
-                <Input
-                  style={forminputsize}
-                  type="text"
-                  name='groupDescription'
-                  placeholder='Description'
-                  value={this.state.groupDescription}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-                
-                
-                <Button
-                color="secondary"
-                size="lg"
-               
-                disabled={isInvalid}
-                type="submit"
-              >
-                Create New Group
+                            placeholder='Enter A Group Name'
+                            value={this.state.groupName}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label style={labelStyle} htmlFor="groupDescription" for="text">Enter A Group Description: </Label>
+                        <Input
+                            style={forminputsize}
+                            type="text"
+                            name='groupDescription'
+                            placeholder='Description'
+                            value={this.state.groupDescription}
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+
+
+                    <Button
+                        color="secondary"
+                        size="lg"
+                        disabled={isInvalid}
+                        type="submit"
+                    >
+                        Create New Group
               </Button>
-            </Form>
-                </div>
-                           
-                   
+                </Form>
+            </div>
+
+
         );
     };
 };

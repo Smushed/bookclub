@@ -70,10 +70,8 @@ class AddPost extends Component {
                             onChange={this.handleChange} />
                     </FormGroup>
                     <Button color="secondary" size="lg"
-
                         disabled={isInvalid}
                         type='submit'>Submit Post</Button>
-
                 </Form>
             </div>
         );

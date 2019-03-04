@@ -10,12 +10,12 @@ const ButtonStyle = {
 
 const GroupNav = (props) => {
     return (
-        <div align="center" >
+        <div align='center' >
             Admin Panel
                 <hr></hr>
-            <Button outline color="primary" style={ButtonStyle} onClick={() => props.updatePage('main')}>Show Club Page</Button>
-            <Button outline color="primary" style={ButtonStyle} onClick={() => props.updatePage('updateBook')}>Update Book</Button>
-            <Button outline color="primary" style={ButtonStyle} onClick={() => props.updatePage('addUser')}>Add User</Button>
+            <Button outline color='primary' style={ButtonStyle} onClick={() => props.updatePage('main')}>Show Club Page</Button>
+            <Button outline color='primary' style={ButtonStyle} onClick={() => props.updatePage('updateBook')}>Update Book</Button>
+            <Button outline color='primary' style={ButtonStyle} onClick={() => props.updatePage('addUser')}>Add User</Button>
         </div>
     )
 }

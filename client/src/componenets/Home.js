@@ -141,8 +141,7 @@ class GroupCard extends Component {
                             date: postData.data[0].date
                         });
                     };
-                }))
-
+                }));
             });
         };
     };

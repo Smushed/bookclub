@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import '../App.css';
 
 import * as Routes from '../constants/routes';
@@ -21,20 +20,20 @@ const background = {
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+};
 
-
-}
 const textsize = {
     fontSize: "30px",
     color: 'white',
-}
+};
 
 const padding = {
     marginLeft: '40px'
-}
+};
+
 const padding2 = {
-    textAlign:'left',
-}
+    textAlign: 'left',
+};
 
 const NavBar = (props) => {
     return (
@@ -57,23 +56,20 @@ const NavBar = (props) => {
                                         <NavItem>
                                             <SignOutButton />
                                         </NavItem>
-
                                     </Nav>
                                 </section>
                                 ) : (
                                         <section>
                                             <Nav style={textsize}  >
-                                            <div style={padding2}>
-                                                <NavItem>
-                                                    <NavLink href={Routes.signin}>Sign In </NavLink>
-                                                 
-                                                </NavItem>
-                                                
+                                                <div style={padding2}>
+                                                    <NavItem>
+                                                        <NavLink href={Routes.signin}>Sign In </NavLink>
+                                                    </NavItem>
                                                 </div>
                                                 <div style={padding}>
-                                                <NavItem>
-                                                    <NavLink href={Routes.signup}>Sign Up</NavLink>
-                                                </NavItem>
+                                                    <NavItem>
+                                                        <NavLink href={Routes.signup}>Sign Up</NavLink>
+                                                    </NavItem>
                                                 </div>
                                             </Nav>
                                         </section>

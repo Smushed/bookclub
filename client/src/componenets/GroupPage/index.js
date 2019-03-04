@@ -1,25 +1,25 @@
-import React, { Component, Fragment } from "react";
-import { withAuthorization } from "../Session";
-import axios from "axios";
-import CurrentBook from "./CurrentBook";
-import AddBook from "./AddBook";
+import React, { Component, Fragment } from 'react';
+import { withAuthorization } from '../Session';
+import axios from 'axios';
+import CurrentBook from './CurrentBook';
+import AddBook from './AddBook';
 
-import ShowAllPosts from "./ShowAllPosts";
-import UpdateBenchmark from "./UpdateBenchmark";
-import UserSearch from "../UserSearch";
-import UserList from "./UserList";
-import GroupNav from "./GroupNav";
-import { Row, Col } from "reactstrap";
+import ShowAllPosts from './ShowAllPosts';
+import UpdateBenchmark from './UpdateBenchmark';
+import UserSearch from '../UserSearch';
+import UserList from './UserList';
+import GroupNav from './GroupNav';
+import { Row, Col } from 'reactstrap';
 
 
 
 //Initializes all the data we need for the group as well as what should display on the app
 const initialState = {
   groupID: 0,
-  groupName: "",
-  groupDescription: "",
+  groupName: '',
+  groupDescription: '',
   userlist: [],
-  currentBook: "",
+  currentBook: '',
   pastBook: [],
   currentBenchmark: 0,
   previousBenchmark: [],
@@ -32,25 +32,25 @@ const initialState = {
 };
 
 const adminpanel = {
-  textAlign: "center",
-  fontSize: "25px",
-  border: "1px double #000000",
-  padding: "10px",
-  marginBottom: "50px"
+  textAlign: 'center',
+  fontSize: '25px',
+  border: '1px double #000000',
+  padding: '10px',
+  marginBottom: '50px'
 };
 const groupinfopanel = {
-  textAlign: "center",
-  fontSize: "50px",
+  textAlign: 'center',
+  fontSize: '50px',
 
-  padding: "10px",
-  marginBottom: "30px"
+  padding: '10px',
+  marginBottom: '30px'
 };
 
 const columnbackground = {
-  fontSize: "30px",
-  padding: "10px",
-  marginBottom: "50px",
-  textAlign: "center"
+  fontSize: '30px',
+  padding: '10px',
+  marginBottom: '50px',
+  textAlign: 'center'
 };
 
 class GroupPage extends Component {
@@ -61,7 +61,7 @@ class GroupPage extends Component {
 
   componentDidMount() {
     const groupIDFromURL = this.props.match.params.groupID;
-    if (typeof groupIDFromURL !== "undefined") {
+    if (typeof groupIDFromURL !== 'undefined') {
       this.getGroupData(groupIDFromURL);
     }
   }
@@ -118,7 +118,7 @@ class GroupPage extends Component {
   //Toggles the page based on what the user chooses to see
   updatePage = showPage => {
     switch (showPage) {
-      case "main":
+      case 'main':
         this.setState({
           showMainPage: true,
           updateBook: false,
@@ -126,7 +126,7 @@ class GroupPage extends Component {
         });
         this.getGroupData(this.state.groupID);
         break;
-      case "updateBook":
+      case 'updateBook':
         this.setState({
           showMainPage: false,
           updateBook: true,
@@ -134,7 +134,7 @@ class GroupPage extends Component {
         });
         this.getGroupData(this.state.groupID);
         break;
-      case "addUser":
+      case 'addUser':
         this.setState({
           showMainPage: false,
           updateBook: false,
@@ -168,7 +168,7 @@ class GroupPage extends Component {
     return (
       <div>
         <Row>
-          <Col xs="6">
+          <Col xs='6'>
             {error && <p>{error.message}</p>}
             {isAdmin &&
               <div style={adminpanel}>
@@ -190,7 +190,7 @@ class GroupPage extends Component {
             </div>
           </Col>
 
-          <Col xs="6">
+          <Col xs='6'>
             <div style={groupinfopanel}>
               <GroupInfo
                 groupName={groupName}
