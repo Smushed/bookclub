@@ -129,14 +129,13 @@ class SignInFormBase extends Component {
                 <PasswordResetLink />
             </div >
         );
-
     };
 };
 
 const SignInForm = compose(withRouter, withFirebase)(SignInFormBase);
 
 const SignInLink = () => (
-    <p>
+    <p style={{ fontSize: '16px' }}>
         Already have an account?
         <Link to={Routes.signin}>
             <Button color='success'

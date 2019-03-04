@@ -17,7 +17,8 @@ const inputStyle = {
 };
 
 const labelStyle = {
-    marginBottom: '0px'
+    marginBottom: '0px',
+    fontSize: '18px'
 };
 
 const form = {
@@ -26,8 +27,8 @@ const form = {
     marginRight: 'auto',
 };
 
-const fontStyle = {
-    fontSize: '25px'
+const labelDescription = {
+    fontSize: '14px'
 };
 
 const initialState = {
@@ -196,8 +197,12 @@ class SignUpFormBase extends Component {
                         <Label style={labelStyle}>
                             Password
                                 <br />
-                            (Must be at least 6 characters with no spaces)
                         </Label>
+                        <div style={labelDescription}>
+                            <strong>
+                                (Must be at least 6 characters with no spaces)
+                            </strong>
+                        </div>
                         <Input
                             style={inputStyle}
                             placeholder='Password'
@@ -226,8 +231,12 @@ class SignUpFormBase extends Component {
                         <Label style={labelStyle}>
                             Username
                             <br />
-                            (Must be between 3 & 16 characters, no special characters & no spaces)
                         </Label>
+                        <div style={labelDescription}>
+                            <strong>
+                                (Must be between 3 & 16 characters, no special characters & no spaces)
+                            </strong>
+                        </div>
                         <Input
                             style={inputStyle}
                             placeholder='ex. JaneDoe14'
@@ -285,7 +294,7 @@ const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
 
 const SignUpLink = () => (
-    <p>
+    <p style={{ fontSize: '16px' }}>
         Don't have an account?
         <Link to={Routes.signup}>
             <Button color='success' size='lg'>
