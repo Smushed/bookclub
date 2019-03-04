@@ -155,9 +155,6 @@ class AddBookPage extends Component {
 
 //This component is going to have state to wrap the book in the submit and send it to the database
 class SingleBook extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   //We are going to chain alerts so the user adds a book then immeditley sets it up for use
   //TODO Possibly redo this to make three modals in order and then three calls to the api

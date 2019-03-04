@@ -10,7 +10,6 @@ const cardStyle = {
     borderRadius: '2px',
     marginLeft: '5px',
     marginRight: '5px',
-    height: 'auto',
     overflow: 'auto',
     height: '600px',
     marginBottom: '10px'
@@ -21,7 +20,8 @@ const textsize = {
 };
 
 const textsize2 = {
-    fontSize: '25px'
+    fontSize: '25px',
+    margin: '0 auto'
 };
 
 const cardImageStyle = {
@@ -90,7 +90,7 @@ const NoGroup = () => {
     return (
         <div>
             <p style={textsize}><strong>Welcome to Bookworm!</strong> </p>
-            <p style={{ margin: '0 auto' }} style={textsize2} >You’ve taken your first step into being more engaged with reading! Why not create a group above? Once there be sure to add a book and invite some of your friends to join!</p>
+            <p style={textsize2} >You’ve taken your first step into being more engaged with reading! Why not create a group above? Once there be sure to add a book and invite some of your friends to join!</p>
         </div>
     )
 }

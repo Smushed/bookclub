@@ -3,7 +3,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Button, Form, FormGroup, Label, Input, } from 'reactstrap';
-import { Row, Col } from "reactstrap";
 
 //Using Swal to display messages when submit button is hit
 const Alert = withReactContent(Swal);
@@ -88,9 +87,6 @@ class UserSearch extends Component {
 
 //This component is going to have state to wrap the book in the submit and send it to the database
 class SingleUser extends Component {
-    constructor(props) {
-        super(props);
-    };
 
     addUserToGroup = async (event) => {
         const { isAdmin, groupID } = this.props;
